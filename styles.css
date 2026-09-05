@@ -175,7 +175,7 @@ main {
 .trace-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
 
 .tide {
-  width: 68%;
+  width: 72%;
   min-width: 12rem;
   height: 100%;
   border: 1px solid var(--line);
@@ -211,6 +211,12 @@ main {
   max-width: 24ch;
   text-align: center;
   transition: color 0.5s ease;
+}
+.pacer[data-art="tide"] .cue {
+  width: 72%;
+  max-width: 72%;
+  padding: 0.45rem 1rem;
+  line-height: 1.35;
 }
 /* sequences and prompts put a whole instruction here, not a one-word cue */
 .pacer[data-wide] .cue { max-width: 24ch; font-weight: 400; }
@@ -489,10 +495,14 @@ body.is-focus .stage {
 
 /* the instrument becomes the biggest thing on screen; its label steps back */
 body.is-focus .t-name {
-  font-size: 1.08rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
   font-style: normal;
   color: var(--muted);
-  letter-spacing: 0;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
 }
 body.is-focus .pacer { width: min(26rem, 82vw); margin-top: 2.4rem; }
 body.is-focus .pacer[data-art="wave"] { width: min(44rem, 94vw); }
