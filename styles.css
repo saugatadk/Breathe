@@ -1,0 +1,541 @@
+/* Breathe — a break that has a shape.
+   Palette is a deep petrol ground so the pacer is the only bright thing in a dim room.
+   Three accents carry meaning, not decoration: mint = breathe in, blue = hold, wheat = let go. */
+
+:root {
+  --deep:   #14262b;
+  --panel:  #1a3138;
+  --line:   #2b4850;
+  --chalk:  #eaf0ec;
+  --muted:  #93aaa8;
+  --inhale: #79d4c0;
+  --hold:   #9bb4d4;
+  --exhale: #e4b978;
+  --now: var(--inhale);
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --measure: 62ch;
+}
+
+[data-theme="bright"] {
+  --deep:   #e9efea;
+  --panel:  #f7faf6;
+  --line:   #c3d1cb;
+  --chalk:  #152a2f;
+  --muted:  #5b7378;
+  --inhale: #10826b;
+  --hold:   #3c5f8f;
+  --exhale: #9a6510;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 0 clamp(1.25rem, 5vw, 4.5rem) 5rem;
+  background: var(--deep);
+  color: var(--chalk);
+  font: 400 clamp(1rem, 0.97rem + 0.15vw, 1.06rem)/1.55 var(--sans);
+  font-variant-numeric: tabular-nums;
+  max-width: 1280px;
+  margin-inline: auto;
+}
+h1, h2 { font-weight: 400; margin: 0; }
+
+a { color: var(--chalk); text-decoration-color: var(--line); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--inhale); }
+
+:focus-visible {
+  outline: 2px solid var(--inhale);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 5;
+  background: var(--panel);
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--line);
+}
+
+/* ---- masthead ------------------------------------------------------- */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.1rem;
+  padding: 1.6rem 0 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: clamp(1.55rem, 1.2rem + 1.4vw, 2.05rem);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+.tagline { margin: 0; color: var(--muted); flex: 1 1 14rem; }
+
+.tools { display: flex; gap: 0.5rem; }
+.tool {
+  font: inherit;
+  font-size: 0.84rem;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+}
+.tool:hover { color: var(--chalk); border-color: var(--muted); }
+.tool[aria-pressed="true"] { color: var(--deep); background: var(--inhale); border-color: var(--inhale); }
+
+/* ---- two-zone layout: instrument on the left, information on the right */
+
+main {
+  display: grid;
+  gap: 4rem;
+  padding-top: clamp(3.5rem, 8vw, 6.5rem);
+}
+
+@media (min-width: 62rem) {
+  main {
+    grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+    gap: clamp(4rem, 8vw, 8rem);
+    align-items: start;
+  }
+  .stage { position: sticky; top: 2rem; }
+  .index {
+    border-left: 1px solid var(--line);
+    padding-left: clamp(1.5rem, 3vw, 3rem);
+  }
+}
+
+/* ---- stage ---------------------------------------------------------- */
+
+.stage { text-align: center; }
+
+.t-name {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 1.5rem + 4vw, 4rem);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+}
+
+.t-what {
+  color: var(--muted);
+  margin: 1rem auto 0;
+  max-width: 34ch;
+}
+/* ---- the pacer: one bright instrument, four different geometries ----- */
+
+.pacer {
+  position: relative;
+  width: min(19.5rem, 80vw);
+  aspect-ratio: 1;
+  margin: 2.8rem auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.pacer[data-art="wave"] { width: min(30rem, 100%); aspect-ratio: 2 / 1.1; }
+/* the sensory prompts have no instrument, so don't reserve a square of nothing */
+.pacer[data-art="none"] { aspect-ratio: auto; min-height: 11rem; }
+
+.pacer-art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pacer-art svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+.trace-base { fill: none; stroke: var(--line); stroke-width: 1.25; }
+.trace-live {
+  fill: none;
+  stroke: var(--now);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: stroke 0.5s ease;
+}
+.trace-dot { fill: var(--now); transition: fill 0.5s ease; }
+.trace-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
+
+.tide {
+  width: 68%;
+  min-width: 12rem;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.tide-fill {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 0;
+  background: var(--now);
+  opacity: 0.18;
+  border-top: 2px solid var(--now);
+  transition: height 1s linear, border-color 0.5s ease, background 0.5s ease;
+}
+.count {
+  position: relative;
+  font-family: var(--serif);
+  font-size: clamp(2.7rem, 1.6rem + 4.6vw, 4.2rem);
+  font-weight: 200;
+  line-height: 1;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.cue {
+  position: relative;
+  margin: 0.55rem 0 0;
+  color: var(--now);
+  font-weight: 500;
+  font-size: 0.95rem;
+  max-width: 24ch;
+  text-align: center;
+  transition: color 0.5s ease;
+}
+/* sequences and prompts put a whole instruction here, not a one-word cue */
+.pacer[data-wide] .cue { max-width: 24ch; font-weight: 400; }
+
+/* ---- controls -------------------------------------------------------- */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.primary, .ghost {
+  font: inherit;
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 0.6rem 1.25rem;
+}
+.primary {
+  font-weight: 500;
+  background: var(--inhale);
+  color: var(--deep);
+  border: 1px solid var(--inhale);
+  padding-inline: 1.9rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.16);
+}
+.primary:hover { filter: brightness(1.09); }
+.ghost { color: var(--muted); background: none; border: 1px solid var(--line); }
+.ghost:hover { color: var(--chalk); border-color: var(--muted); }
+.progress {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 1.1rem 0 0;
+  min-height: 1.3em;
+}
+
+/* ---- sequences and the scratch pad ---------------------------------- */
+
+.steps {
+  list-style: none;
+  counter-reset: s;
+  margin: 1.3rem 0 0;
+  padding: 0;
+  text-align: left;
+}
+.steps li {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: 0.55rem;
+  padding: 0.4rem 0;
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+.steps li::before {
+  counter-increment: s;
+  content: counter(s);
+  font-size: 0.78rem;
+  color: var(--line);
+  padding-top: 0.22rem;
+}
+.steps .is-now { color: var(--chalk); }
+.steps .is-now::before { color: var(--now); }
+.steps .is-done { opacity: 0.45; }
+
+.scratch {
+  width: 100%;
+  min-height: 8.5rem;
+  margin-top: 1.3rem;
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+  color: var(--chalk);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  resize: vertical;
+}
+.scratch-note { margin: 0.5rem 0 0; text-align: left; color: var(--muted); font-size: 0.82rem; }
+/* ---- evidence disclosure -------------------------------------------- */
+
+.evidence {
+  margin-top: 1.7rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+.evidence summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.9rem;
+  list-style: none;
+}
+.evidence summary::-webkit-details-marker { display: none; }
+.evidence summary::before { content: "+  "; color: var(--line); }
+.evidence[open] summary::before { content: "\2013  "; }
+.evidence summary:hover { color: var(--chalk); }
+.evidence-body { color: var(--muted); font-size: 0.92rem; max-width: var(--measure); }
+.evidence-body p { margin: 0.75rem 0 0; }
+.evidence-body strong { color: var(--chalk); font-weight: 500; }
+.evidence-body em { color: var(--chalk); font-style: normal; }
+
+/* ---- the index ------------------------------------------------------ */
+
+.index-head {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 1.05rem + 1vw, 1.62rem);
+  font-weight: 300;
+  line-height: 1.25;
+  max-width: 24ch;
+}
+
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 2rem 0 0.75rem;
+}
+.filter-q { color: var(--muted); font-size: 0.85rem; margin-right: 0.35rem; }
+
+.chip {
+  font: inherit;
+  font-size: 0.84rem;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.28rem 0.8rem;
+  cursor: pointer;
+}
+.chip:hover { color: var(--chalk); border-color: var(--muted); }
+.chip.is-on { color: var(--deep); background: var(--chalk); border-color: var(--chalk); }
+
+.group {
+  font-family: var(--serif);
+  font-size: 1.06rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+  margin: 1.9rem 0 0.3rem;
+}
+.group:first-child { margin-top: 1.1rem; }
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.1rem 0.9rem;
+  width: 100%;
+  padding: 1rem 0 1.05rem 0.95rem;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+}
+.row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  bottom: 0.9rem;
+  width: 2px;
+  background: var(--line);
+}
+.row:hover::before { background: var(--muted); }
+.row[aria-current="true"]::before { background: var(--inhale); }
+.row[aria-current="true"] .row-name { color: var(--inhale); }
+
+.row-name { font-size: 1.02rem; }
+.row-time { color: var(--muted); font-size: 0.82rem; padding-top: 0.2rem; white-space: nowrap; }
+.row-what { color: var(--muted); font-size: 0.88rem; max-width: 46ch; }
+.tier { display: flex; align-items: flex-end; gap: 2.5px; align-self: end; justify-self: end; }
+.tier i {
+  display: block;
+  width: 5px;
+  height: 11px;
+  border: 1px solid var(--line);
+  border-radius: 1px;
+}
+.tier i.on { background: var(--muted); border-color: var(--muted); }
+.row[aria-current="true"] .tier i.on { background: var(--inhale); border-color: var(--inhale); }
+
+.empty { color: var(--muted); font-size: 0.9rem; padding: 1.2rem 0 0; max-width: 42ch; }
+
+.legend {
+  margin-top: 2.3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.legend p { margin: 0 0 0.65rem; max-width: 44ch; }
+.legend ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.legend li { display: flex; align-items: center; gap: 0.6rem; }
+.legend .tier { align-self: center; }
+
+/* legend swatches: fill the bars that the tier they describe would fill */
+.legend .t3 i, .legend .t2 i:nth-child(-n+2), .legend .t1 i:nth-child(1) {
+  background: var(--muted);
+  border-color: var(--muted);
+}
+
+/* ---- sources -------------------------------------------------------- */
+
+.refs {
+  margin-top: 7rem;
+  padding-top: 1.7rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.refs h2 {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 300;
+  color: var(--chalk);
+  margin-bottom: 0.55rem;
+}
+.refs p { max-width: var(--measure); }
+.refs-list {
+  list-style: none;
+  margin: 1.3rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+  max-width: 80ch;
+}
+.refs-list li { padding-left: 0.95rem; border-left: 1px solid var(--line); }
+.refs cite { font-style: italic; }
+.caveat { margin-top: 1.6rem; font-size: 0.84rem; }
+
+.noscript {
+  max-width: var(--measure);
+  margin: 2.5rem 0 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--exhale);
+  border-radius: 10px;
+  color: var(--chalk);
+}
+
+/* ---- focus mode ------------------------------------------------------
+   While a session is running the page is only the instrument: the index,
+   the masthead, the sources and the evidence all leave, and the pacer moves
+   to the middle of the screen. Pausing or Esc brings it all back. */
+
+body.is-focus { padding-bottom: 0; }
+
+body.is-focus .masthead,
+body.is-focus .index,
+body.is-focus .refs,
+body.is-focus .noscript,
+body.is-focus .evidence,
+body.is-focus .t-what,
+body.is-focus .steps,
+body.is-focus .reset,
+body.is-focus .focus-hint { display: none; }
+
+body.is-focus main {
+  padding-top: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  gap: 0;
+}
+body.is-focus .stage {
+  position: static;
+  width: 100%;
+  max-width: 52rem;
+  justify-self: center;
+}
+
+/* the instrument becomes the biggest thing on screen; its label steps back */
+body.is-focus .t-name {
+  font-size: 1.08rem;
+  font-style: normal;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+body.is-focus .pacer { width: min(26rem, 82vw); margin-top: 2.4rem; }
+body.is-focus .pacer[data-art="wave"] { width: min(44rem, 94vw); }
+body.is-focus .pacer[data-art="none"] { min-height: 13rem; }
+body.is-focus .count { font-size: clamp(3.4rem, 2rem + 6vw, 6rem); }
+body.is-focus .cue { font-size: 1.02rem; }
+body.is-focus .scratch { min-height: 7rem; max-width: 34rem; margin-inline: auto; }
+
+.focus-hint { display: none; }
+
+/* ---- motion: the only unprompted animation is the opening breath ---- */
+
+/* One unprompted breath on load, so the instrument explains itself. It is
+   removed from the element the moment the exercise actually starts. */
+@keyframes demo-breath {
+  0%   { height: 0; }
+  22%  { height: 72%; }
+  34%  { height: 100%; }
+  100% { height: 0; }
+}
+.tide[data-demo] .tide-fill {
+  animation: demo-breath 9.2s ease-in-out 0.6s 1 both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+}
+
+@media (max-width: 62rem) {
+  main { padding-top: 3.5rem; }
+  .index-head { max-width: 34ch; }
+  .row-what { max-width: none; }
+}
+
+
+
+
+
+
+
+
+

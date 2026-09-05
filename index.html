@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dim">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breathe — evidence-based study breaks</title>
+<meta name="description" content="Short, evidence-based ways to reset during a study break: paced breathing, muscle release, eye recovery, attention restoration. Each technique says how strong the evidence actually is.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#techniques">Skip to the techniques</a>
+
+<header class="masthead">
+  <h1 class="wordmark">Breathe</h1>
+  <p class="tagline">A clear pause between blocks of work.</p>
+  <div class="tools">
+    <button type="button" id="sound" class="tool" aria-pressed="false">Sound cues off</button>
+    <button type="button" id="theme" class="tool">Brighten</button>
+  </div>
+</header>
+
+<main>
+  <section class="stage" aria-labelledby="t-name">
+    <h2 class="t-name" id="t-name">Physiological sigh</h2>
+    <p class="t-what" id="t-what">Two inhales through the nose, then a long, slow exhale through the mouth.</p>
+
+    <div class="pacer" id="pacer">
+      <div class="pacer-art" id="pacer-art"></div>
+      <p class="count" id="count" aria-hidden="true">0:56</p>
+      <p class="cue" id="cue" aria-live="polite">Press start when you're ready</p>
+    </div>
+
+    <div class="controls">
+      <button type="button" class="primary" id="start">Start</button>
+      <button type="button" class="ghost" id="step" hidden>Next step</button>
+      <button type="button" class="ghost" id="reset">Reset</button>
+    </div>
+    <p class="progress" id="progress" aria-live="polite"></p>
+    <div class="extra" id="extra"></div>
+    <p class="focus-hint">Esc to pause and bring the page back.</p>
+
+    <details class="evidence">
+      <summary>What the evidence says</summary>
+      <div class="evidence-body" id="evidence"></div>
+    </details>
+  </section>
+  <section class="index" id="techniques" aria-labelledby="index-head">
+    <h2 class="index-head" id="index-head">Choose the kind of reset you need.</h2>
+
+    <div class="filter" role="group" aria-label="Filter by how long your break is">
+      <span class="filter-q">Time you have</span>
+      <button type="button" class="chip" data-max="2" aria-pressed="false">2 min</button>
+      <button type="button" class="chip" data-max="5" aria-pressed="false">5 min</button>
+      <button type="button" class="chip" data-max="10" aria-pressed="false">10 min</button>
+      <button type="button" class="chip is-on" data-max="99" aria-pressed="true">Any</button>
+    </div>
+
+    <div class="list" id="list"></div>
+    <p class="empty" id="empty" hidden>Nothing fits that window. Widen it, or take the 40-second green break and get straight back to work.</p>
+
+    <div class="legend">
+      <p>The bars measure the evidence, not how good the technique feels.</p>
+      <ul>
+        <li><span class="tier t3" aria-hidden="true"><i></i><i></i><i></i></span>Tested in randomised trials</li>
+        <li><span class="tier t2" aria-hidden="true"><i></i><i></i><i></i></span>Mechanism is solid, outcome evidence thinner</li>
+        <li><span class="tier t1" aria-hidden="true"><i></i><i></i><i></i></span>Used in practice, not yet trial-tested</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="refs">
+  <h2>Where this comes from</h2>
+  <p>Every claim on this page traces to one of these. Where a study contradicts the popular
+     version of a technique, that's noted on the technique itself rather than buried here.</p>
+  <ul class="refs-list">
+    <li><a href="https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(22)00474-8">Balban et al. 2023, <cite>Cell Reports Medicine</cite></a> — five minutes a day of cyclic sighing, box breathing, cyclic hyperventilation or mindfulness meditation, compared over a month in 108 adults.</li>
+    <li><a href="https://www.nature.com/articles/s41598-022-27247-y">Fincham et al. 2023, <cite>Scientific Reports</cite></a> — meta-analysis of breathwork trials for stress and mental health.</li>
+    <li><a href="https://www.nature.com/articles/s41598-023-49279-8">Fincham et al. 2023, <cite>Scientific Reports</cite></a> — coherent breathing tested against a sham breathwork placebo.</li>
+    <li><a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2014.00756/full">Lehrer &amp; Gevirtz 2014, <cite>Frontiers in Psychology</cite></a> — why breathing near 0.1 Hz produces such large heart-rate oscillations.</li>
+    <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2427027/">Manzoni et al. 2008, <cite>BMC Psychiatry</cite></a> — ten years of relaxation training trials for anxiety, reviewed.</li>
+    <li><a href="https://www.tandfonline.com/doi/full/10.2147/PRBM.S437277">Progressive muscle relaxation in adults</a> — review of effects on stress, anxiety and depression.</li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/36044424/">Albulescu et al. 2022, <cite>PLOS ONE</cite></a> — micro-breaks of ten minutes or less across 22 studies.</li>
+    <li><a href="https://www.researchgate.net/publication/275837331_40-second_green_roof_views_sustain_attention_The_role_of_micro-breaks_in_attention_restoration">Lee et al. 2015, <cite>Journal of Environmental Psychology</cite></a> — a forty-second look at a green roof, and what it did to sustained attention.</li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/24749966/">Oppezzo &amp; Schwartz 2014, <cite>JEP: Learning, Memory, and Cognition</cite></a> — walking and divergent thinking.</li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/21233387/">Ramirez &amp; Beilock 2011, <cite>Science</cite></a> — ten minutes of writing about exam worries, and the exam scores that followed.</li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/35963776/">Talens-Estarelles et al. 2022</a> and <a href="https://pubmed.ncbi.nlm.nih.gov/40466853/">a 2025 break-schedule trial</a> — what screen breaks actually do to eye strain.</li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/38215647/">Acute mindfulness induction in high-anxiety adults</a> and <a href="https://www.nature.com/articles/s41598-023-46578-y">Palmer et al. 2023</a> — how much a single short sit is worth.</li>
+    <li><a href="https://www.researchgate.net/publication/11408344_Increased_Dopamine_Tone_During_Meditation-Induced_Change_of_Consciousness">Kjaer et al. 2002, <cite>Cognitive Brain Research</cite></a> — the eight-person PET study behind every NSDR dopamine claim you've read.</li>
+  </ul>
+  <p class="caveat">This is a study aid, not medical care. Paced breathing can make you lightheaded;
+     stop and breathe normally if it does. If stress or anxiety is affecting your daily life, talk
+     to a doctor or your university's counselling service — a website is not a substitute for that.</p>
+</footer>
+
+<noscript>
+  <p class="noscript">The exercises here are timed, so they need JavaScript switched on. The
+     techniques themselves still work without it: two short inhales and one long exhale, repeated
+     for a minute, is the best-supported one on the page.</p>
+</noscript>
+<script src="app.js"></script>
+</body>
+</html>
